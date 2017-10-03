@@ -28,52 +28,73 @@ var app = {
   // 'pause', 'resume', etc.
   onDeviceReady: function() {
     // http://stackoverflow.com/questions/935127/how-to-access-parent-iframe-from-javascript
+    // https://stackoverflow.com/questions/3588315/how-to-check-if-the-user-can-go-back-in-browser-history-or-not/16580022
+    // https://stackoverflow.com/a/7651297/6086756
 
     // Hijack Back Button
     var iframe = document.body.getElementsByTagName('iframe')[0]
     function onBackKeyDown(e) {
       e.preventDefault()
-      console.log(iframe.contentWindow.history);
-      console.log(iframe.contentWindow.cordova);
-      console.log(window.FileTransfer);
-      console.log(iframe.contentWindow);
-      console.log(window);
-      iframe.contentWindow.history.back()
+      if (document.referrer === "") navigator.app.exitApp()
+      else {
+        iframe.contentWindow.history.back()
+      }
     }
     document.addEventListener("backbutton", onBackKeyDown, false);
 
-    // Attach downloadFile Function to the app function
-    app.downloadFile = function(url) {
 
-      var fileTransfer = new FileTransfer();
-      var fileURL = 'cdvfile://localhost/persistent/download/'
-      var uri = encodeURI(url);
-
-      fileTransfer.download(
-          uri,
-          fileURL,
-          function(entry) {
-              console.log("download complete: " + entry.toURL());
-          },
-          function(error) {
-              console.log("download error source " + error.source);
-              console.log("download error target " + error.target);
-              console.log("download error code" + error.code);
-          },
-          false, {}
-      );
-
+    function injectToIframe(func, name) {
+      iframe.contentWindow.cordova[name] = func
     }
 
+
+    // Show when device ready
     iframe.style.display = "block";
 
-    // iframe.contentWindow.FileTransfer = FileTransfer;
+    // Container
+    iframe.contentWindow.cordova = {}
+
+    // Get Cordova Window at some point
     iframe.contentWindow.getCordova = function (name) {
       return window[name]
     };
+
+    // Get Navigator
     iframe.contentWindow.getDevice = function () {
       return navigator
     };
+
+    // Get Navigator Spesific
+    iframe.contentWindow.getCordovaNavigator = function (name) {
+      return navigator[name]
+    };
+
+    // Inject when the plugin required custom constructor that web doesn't know
+    injectToIframe(function (success, error, options) {
+      navigator.geolocation.getCurrentPosition
+        ((position) => {
+          var webObject = {
+            coords: {
+              accuracy: position.coords.accuracy,
+              altitude: position.coords.altitude,
+              altitudeAccuracy: position.coords.altitudeAccuracy,
+              heading: position.coords.heading,
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+              speed: position.coords.speed,
+            },
+            timestamp: position.timestamp,
+          }
+          return success(webObject)
+        }, (err) => {
+          var webObject = {
+            code: err.code,
+            message: err.message,
+          }
+          return error(webObject)
+        }, options || null)
+    }, "getCurrentPosition")
+
   },
 
 };

@@ -33,6 +33,11 @@ var app = {
     var iframe = document.body.getElementsByTagName('iframe')[0]
     function onBackKeyDown(e) {
       e.preventDefault()
+      console.log(iframe.contentWindow.history);
+      console.log(iframe.contentWindow.cordova);
+      console.log(window.FileTransfer);
+      console.log(iframe.contentWindow);
+      console.log(window);
       iframe.contentWindow.history.back()
     }
     document.addEventListener("backbutton", onBackKeyDown, false);
@@ -60,6 +65,15 @@ var app = {
 
     }
 
+    iframe.style.display = "block";
+
+    // iframe.contentWindow.FileTransfer = FileTransfer;
+    iframe.contentWindow.getCordova = function (name) {
+      return window[name]
+    };
+    iframe.contentWindow.getDevice = function () {
+      return navigator
+    };
   },
 
 };

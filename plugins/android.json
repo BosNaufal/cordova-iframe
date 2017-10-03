@@ -7,19 +7,22 @@
         "files": {}
     },
     "installed_plugins": {
-        "cordova-plugin-whitelist": {
-            "PACKAGE_NAME": "com.andromedia.ndo"
-        },
         "cordova-plugin-file-transfer": {
-            "PACKAGE_NAME": "com.andromedia.ndo"
+            "PACKAGE_NAME": "com.bosnaufal.cordovaiframe"
+        },
+        "cordova-plugin-geolocation": {
+            "PACKAGE_NAME": "com.bosnaufal.cordovaiframe"
+        },
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "com.bosnaufal.cordovaiframe"
         }
     },
     "dependent_plugins": {
         "cordova-plugin-compat": {
-            "PACKAGE_NAME": "com.andromedia.ndo"
+            "PACKAGE_NAME": "com.bosnaufal.cordovaiframe"
         },
         "cordova-plugin-file": {
-            "PACKAGE_NAME": "com.andromedia.ndo"
+            "PACKAGE_NAME": "com.bosnaufal.cordovaiframe"
         }
     }
 }

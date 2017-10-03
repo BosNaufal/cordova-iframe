@@ -12,6 +12,9 @@
         },
         "cordova-plugin-file-transfer": {
             "PACKAGE_NAME": "com.andromedia.ndo"
+        },
+        "cordova-plugin-geolocation": {
+            "PACKAGE_NAME": "com.andromedia.ndo"
         }
     },
     "dependent_plugins": {
