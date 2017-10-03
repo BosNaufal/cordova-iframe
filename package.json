@@ -1,0 +1,17 @@
+{
+    "name": "com.bosnaufal.cordovaiframe",
+    "version": "1.0.0",
+    "displayName": "cordovaiframe",
+    "cordova": {
+        "platforms": [
+            "android"
+        ],
+        "plugins": {
+            "cordova-plugin-whitelist": {}
+        }
+    },
+    "dependencies": {
+        "cordova-android": "~6.0.0",
+        "cordova-plugin-whitelist": "1"
+    }
+}
