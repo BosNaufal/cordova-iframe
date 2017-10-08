@@ -5,7 +5,9 @@
     <title>Iframe</title>
   </head>
   <body>
-    <h1>Halo</h1>
+    <h1>InsyaaAllah Aman...</h1>
+    <p>Bismillah, Mudahkanlah....</p>
+    <pre id="result"></pre>
     <script>
       // setTimeout hanya untuk simulasi delay deviceReady
       setTimeout(function () {
@@ -26,9 +28,14 @@
                   'Heading: '           + position.coords.heading           + '\n' +
                   'Speed: '             + position.coords.speed             + '\n' +
                   'Timestamp: '         + position.timestamp                + '\n');
+          var preContent = JSON.stringify(position, null, " ");
+          document.getElementById("result").innerHTML = preContent;
+          console.log(preContent)
         }, (err) => {
           console.log("Error");
           console.log(JSON.stringify(err));
+          var preContent = JSON.stringify(err, null, " ");
+          document.getElementById("result").innerHTML = preContent;
         })
 
         // Compatible Plugin Constructor Response
