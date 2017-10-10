@@ -42,37 +42,35 @@ var app = {
     }
     document.addEventListener("backbutton", onBackKeyDown, false);
 
-
-    function injectToIframe(func, name) {
-      iframe.contentWindow.cordova[name] = func
-    }
-
-
     // Show when device ready
     iframe.style.display = "block";
 
-    // Container
-    iframe.contentWindow.cordova = {}
+    function sendCallbackToIframe(action, args) {
+      return iframe.contentWindow.postMessage({
+        from: "cordova",
+        args,
+        action
+      }, "*")
+    }
 
-    // Get Cordova Window at some point
-    iframe.contentWindow.getCordova = function (name) {
-      return window[name]
-    };
+    // // Get Cordova Window at some point
+    // this.getCordova = function (name, callback) {
+    //   return sendCallbackToIframe(callback, window[name])
+    // }
+    //
+    // // Get Device Basic API
+    // this.getDevice = function (callback) {
+    //   return sendCallbackToIframe(callback, navigator)
+    // }
+    //
+    // // Get Navigator Spesific
+    // this.getCordovaNavigator = function (name, callback) {
+    //   return sendCallbackToIframe(callback, navigator[name])
+    // }
 
-    // Get Navigator
-    iframe.contentWindow.getDevice = function () {
-      return navigator
-    };
 
-    // Get Navigator Spesific
-    iframe.contentWindow.getCordovaNavigator = function (name) {
-      return navigator[name]
-    };
-
-    // Inject when the plugin required custom constructor that web doesn't know
-    injectToIframe(function (success, error, options) {
-      navigator.geolocation.getCurrentPosition
-        ((position) => {
+    this.getCurrentPosition = function (success, error, options) {
+      navigator.geolocation.getCurrentPosition(function (position) {
           var webObject = {
             coords: {
               accuracy: position.coords.accuracy,
@@ -85,15 +83,26 @@ var app = {
             },
             timestamp: position.timestamp,
           }
-          return success(webObject)
-        }, (err) => {
+          return sendCallbackToIframe(success, [webObject])
+        }, function (err) {
           var webObject = {
             code: err.code,
             message: err.message,
           }
-          return error(webObject)
+          return sendCallbackToIframe(error, [webObject])
         }, options || null)
-    }, "getCurrentPosition")
+    }
+
+    var me = this
+    // Add Event Listener...
+    window.addEventListener("message", function(e) {
+      const action = e.data
+      var funcName = e.data.funcName;
+      var args = e.data.args;
+      if (funcName) {
+        me[funcName].apply(me, args || [])
+      }
+    }, false);
 
   },
 
