@@ -53,22 +53,6 @@ var app = {
       }, "*")
     }
 
-    // // Get Cordova Window at some point
-    // this.getCordova = function (name, callback) {
-    //   return sendCallbackToIframe(callback, window[name])
-    // }
-    //
-    // // Get Device Basic API
-    // this.getDevice = function (callback) {
-    //   return sendCallbackToIframe(callback, navigator)
-    // }
-    //
-    // // Get Navigator Spesific
-    // this.getCordovaNavigator = function (name, callback) {
-    //   return sendCallbackToIframe(callback, navigator[name])
-    // }
-
-
     this.getCurrentPosition = function (success, error, options) {
       navigator.geolocation.getCurrentPosition(function (position) {
           var webObject = {
