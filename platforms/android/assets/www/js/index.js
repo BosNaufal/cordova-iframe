@@ -31,20 +31,24 @@ var app = {
     // https://stackoverflow.com/questions/3588315/how-to-check-if-the-user-can-go-back-in-browser-history-or-not/16580022
     // https://stackoverflow.com/a/7651297/6086756
 
+    alert("sangar");
+
     // Hijack Back Button
     var iframe = document.body.getElementsByTagName('iframe')[0]
     function onBackKeyDown(e) {
-      e.preventDefault()
-      if (document.referrer === "") navigator.app.exitApp()
+      e.preventDefault();
+      if (iframe.contentWindow.document.referrer === "") {
+        navigator.app.exitApp();
+      }
       else {
-        iframe.contentWindow.history.back()
+        iframe.contentWindow.history.back();
       }
     }
     document.addEventListener("backbutton", onBackKeyDown, false);
 
 
     function injectToIframe(func, name) {
-      iframe.contentWindow.cordova[name] = func
+      iframe.contentWindow.cordova[name] = func;
     }
 
 
@@ -52,27 +56,27 @@ var app = {
     iframe.style.display = "block";
 
     // Container
-    iframe.contentWindow.cordova = {}
+    iframe.contentWindow.cordova = {};
 
     // Get Cordova Window at some point
     iframe.contentWindow.getCordova = function (name) {
-      return window[name]
+      return window[name];
     };
 
     // Get Navigator
     iframe.contentWindow.getDevice = function () {
-      return navigator
+      return navigator;
     };
 
     // Get Navigator Spesific
     iframe.contentWindow.getCordovaNavigator = function (name) {
-      return navigator[name]
+      return navigator[name];
     };
 
     // Inject when the plugin required custom constructor that web doesn't know
     injectToIframe(function (success, error, options) {
       navigator.geolocation.getCurrentPosition
-        ((position) => {
+        (function (position) {
           var webObject = {
             coords: {
               accuracy: position.coords.accuracy,
@@ -85,15 +89,15 @@ var app = {
             },
             timestamp: position.timestamp,
           }
-          return success(webObject)
-        }, (err) => {
+          return success(webObject);
+        }, function (err) {
           var webObject = {
             code: err.code,
             message: err.message,
           }
-          return error(webObject)
+          return error(webObject);
         }, options || null)
-    }, "getCurrentPosition")
+    }, "getCurrentPosition");
 
   },
 

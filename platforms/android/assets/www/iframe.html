@@ -12,13 +12,14 @@
       // setTimeout hanya untuk simulasi delay deviceReady
       setTimeout(function () {
         // Get Navigator
-        const Device = window.getDevice()
+        const Device = window.getDevice();
         console.log(Device);
         // Device.app.exitApp()
 
         // use custom function plugin for incompatible plugin Constructor
         // Should define it first at js/index
-        window.cordova.getCurrentPosition((position) => {
+        window.cordova.getCurrentPosition(function (position) {
+          alert("success");
           console.log("success", position.coords.latitude)
           console.log('Latitude: '          + position.coords.latitude          + '\n' +
                   'Longitude: '         + position.coords.longitude         + '\n' +
@@ -30,18 +31,17 @@
                   'Timestamp: '         + position.timestamp                + '\n');
           var preContent = JSON.stringify(position, null, " ");
           document.getElementById("result").innerHTML = preContent;
-          console.log(preContent)
-        }, (err) => {
+        }, function(err) {
           console.log("Error");
           console.log(JSON.stringify(err));
           var preContent = JSON.stringify(err, null, " ");
           document.getElementById("result").innerHTML = preContent;
-        })
+        });
 
         // Compatible Plugin Constructor Response
-        const FileTransfer = window.getCordova("FileTransfer")
+        const FileTransfer = window.getCordova("FileTransfer");
         var fileTransfer = new FileTransfer();
-        var fileURL = 'cdvfile://localhost/persistent/download/'
+        var fileURL = 'cdvfile://localhost/persistent/download/';
         var uri = encodeURI('https://raw.githubusercontent.com/BosNaufal/react-loading-bar/master/LICENSE');
         fileTransfer.download(
             uri,
@@ -56,7 +56,7 @@
             },
             false, {}
         );
-      }, 1000)
+      }, 2000);
     </script>
   </body>
 </html>
