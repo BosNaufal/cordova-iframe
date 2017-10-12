@@ -32,12 +32,14 @@ var app = {
     // https://stackoverflow.com/a/7651297/6086756
 
     // Hijack Back Button
-    var iframe = document.body.getElementsByTagName('iframe')[0]
+    var iframe = document.body.getElementsByTagName('iframe')[0];
     function onBackKeyDown(e) {
-      e.preventDefault()
-      if (document.referrer === "") navigator.app.exitApp()
+      e.preventDefault();
+      if (iframe.contentWindow.document.referrer === "") {
+        navigator.app.exitApp();
+      }
       else {
-        iframe.contentWindow.history.back()
+        iframe.contentWindow.history.back();
       }
     }
     document.addEventListener("backbutton", onBackKeyDown, false);
@@ -48,9 +50,9 @@ var app = {
     function sendCallbackToIframe(action, args) {
       return iframe.contentWindow.postMessage({
         from: "cordova",
-        args,
-        action
-      }, "*")
+        args: args,
+        action: action,
+      }, "*");
     }
 
     this.getCurrentPosition = function (success, error, options) {
@@ -67,27 +69,26 @@ var app = {
             },
             timestamp: position.timestamp,
           }
-          return sendCallbackToIframe(success, [webObject])
+          return sendCallbackToIframe(success, [webObject]);
         }, function (err) {
           var webObject = {
             code: err.code,
             message: err.message,
           }
-          return sendCallbackToIframe(error, [webObject])
-        }, options || null)
+          return sendCallbackToIframe(error, [webObject]);
+        }, options || null);
     }
 
-    var me = this
+    var me = this;
     // Add Event Listener...
     window.addEventListener("message", function(e) {
-      const action = e.data
+      const action = e.data;
       var funcName = e.data.funcName;
       var args = e.data.args;
       if (funcName) {
-        me[funcName].apply(me, args || [])
+        me[funcName].apply(me, args || []);
       }
     }, false);
-
   },
 
 };

@@ -9,13 +9,15 @@
     </author>
     <content src="index.html" />
     <access origin="*" />
+    <access origin="*" subdomains="true" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
     <allow-intent href="tel:*" />
     <allow-intent href="sms:*" />
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
-    <access origin="*" subdomains="true" />
-    <allow-navigation href="*" />
     <allow-intent href="*" />
+    <allow-navigation href="*" />
+    <allow-navigation href="http://plansys.co/" />
+    <allow-navigation href="http://plansys.co/" subdomain="true" />
 </widget>

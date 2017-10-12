@@ -30,14 +30,18 @@ var app = {
     // http://stackoverflow.com/questions/935127/how-to-access-parent-iframe-from-javascript
     // https://stackoverflow.com/questions/3588315/how-to-check-if-the-user-can-go-back-in-browser-history-or-not/16580022
     // https://stackoverflow.com/a/7651297/6086756
+    alert("sangar");
 
     // Hijack Back Button
-    var iframe = document.body.getElementsByTagName('iframe')[0]
+    var iframe = document.body.getElementsByTagName('iframe')[0];
     function onBackKeyDown(e) {
-      e.preventDefault()
-      if (document.referrer === "") navigator.app.exitApp()
+      alert(iframe.contentWindow.document);
+      e.preventDefault();
+      if (iframe.contentWindow.document.referrer === "") {
+        navigator.app.exitApp();
+      }
       else {
-        iframe.contentWindow.history.back()
+        iframe.contentWindow.history.back();
       }
     }
     document.addEventListener("backbutton", onBackKeyDown, false);
@@ -48,26 +52,10 @@ var app = {
     function sendCallbackToIframe(action, args) {
       return iframe.contentWindow.postMessage({
         from: "cordova",
-        args,
-        action
-      }, "*")
+        args: args,
+        action: action,
+      }, "*");
     }
-
-    // // Get Cordova Window at some point
-    // this.getCordova = function (name, callback) {
-    //   return sendCallbackToIframe(callback, window[name])
-    // }
-    //
-    // // Get Device Basic API
-    // this.getDevice = function (callback) {
-    //   return sendCallbackToIframe(callback, navigator)
-    // }
-    //
-    // // Get Navigator Spesific
-    // this.getCordovaNavigator = function (name, callback) {
-    //   return sendCallbackToIframe(callback, navigator[name])
-    // }
-
 
     this.getCurrentPosition = function (success, error, options) {
       navigator.geolocation.getCurrentPosition(function (position) {
@@ -83,27 +71,26 @@ var app = {
             },
             timestamp: position.timestamp,
           }
-          return sendCallbackToIframe(success, [webObject])
+          return sendCallbackToIframe(success, [webObject]);
         }, function (err) {
           var webObject = {
             code: err.code,
             message: err.message,
           }
-          return sendCallbackToIframe(error, [webObject])
-        }, options || null)
+          return sendCallbackToIframe(error, [webObject]);
+        }, options || null);
     }
 
-    var me = this
+    var me = this;
     // Add Event Listener...
     window.addEventListener("message", function(e) {
-      const action = e.data
+      const action = e.data;
       var funcName = e.data.funcName;
       var args = e.data.args;
       if (funcName) {
-        me[funcName].apply(me, args || [])
+        me[funcName].apply(me, args || []);
       }
     }, false);
-
   },
 
 };

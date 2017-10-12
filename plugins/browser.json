@@ -7,14 +7,14 @@
         "files": {}
     },
     "installed_plugins": {
-        "cordova-plugin-whitelist": {
-            "PACKAGE_NAME": "com.andromedia.ndo"
-        },
         "cordova-plugin-file-transfer": {
             "PACKAGE_NAME": "com.andromedia.ndo"
         },
         "cordova-plugin-geolocation": {
             "PACKAGE_NAME": "com.andromedia.ndo"
+        },
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "com.bosnaufal.cordovaiframe"
         }
     },
     "dependent_plugins": {
